@@ -1,40 +1,45 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
-int main() {
-  ios::sync_with_stdio(0);
-  cin.tie(0); cout.tie(0);
+int n,m,x,x_sum,ans=1e9+1,mx;
+vector<int> v;
 
-  long long int n,m,total=0;
-  cin >> n >> m;
-  long long int t[n];
-  for (int i=0; i<n; i++) {
-    cin >> t[i];
-    total += t[i];
-  }
-  if (m==1) {
-    cout << total;
-    return 0;
-  }
-  long long int low=*max_element(t,t+n),high=total,ans=total;
-  while (low+1<=high) {
-    int mid = (low+high)/2,cnt=0,idx=0;
-    for (cnt=1; cnt<=n; cnt++) {
-      int sum=0;
-      while (sum<mid) {
-        sum+=t[idx++];
-        if (idx>=n) break;
-      }
-      if (sum>mid) sum-=t[--idx];
-      if (idx>=n) break;
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    cin >> n >> m;
+    for (int i=0; i<n; i++) {
+        cin >> x;
+        v.push_back(x);
+        x_sum += x;
+        mx = max(mx,x);
     }
-    if (cnt<=m) {
-      high = mid;
-      if (mid<ans) ans=mid;
+
+    int l=mx-1,r=x_sum+1;
+    while (l+1<r) {
+        int mid=(l+r)/2, sum=0, cnt=0;
+
+        for (int i=0; i<n; i++) {
+            sum+=v[i];
+            if (sum>mid) {
+                cnt++;
+                sum=v[i];
+            }
+        }
+        if (sum<=mid) cnt++;
+        
+        if (cnt>m) {
+            l=mid;
+        }
+        else {
+            r=mid;
+            ans = min(ans,mid);
+        }
+
     }
-    else low = mid;
-    if ((low+high)/2==mid) break;
-  }
-  cout << ans;
+
+    cout << ans;
 }
