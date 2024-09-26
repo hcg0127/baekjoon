@@ -9,25 +9,14 @@ vector<char> v;
 
 void dfs(int dep, int idx, int a, int b, string tmp) {
     if (dep==l) {
-        bool down = false;
-        if (a>=1 && b>=2) {
-            cout << tmp << '\n';
-        }
+        if (a>=1 && b>=2) cout << tmp << '\n';
         return;
     }
 
     for (int i=idx; i<c; i++) {
         char ch = v[i];
-        if (!visit[ch-'a']) {
-            visit[ch-'a'] = true;
-            if (ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u') {
-                dfs(dep+1,i+1,a+1,b,tmp+ch);
-            }
-            else {
-                dfs(dep+1,i+1,a,b+1,tmp+ch);
-            }
-            visit[ch-'a'] = false;
-        }
+        if (ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u') dfs(dep+1,i+1,a+1,b,tmp+ch);
+        else dfs(dep+1,i+1,a,b+1,tmp+ch);
     }
 }
 
