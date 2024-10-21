@@ -2,29 +2,29 @@
 #include <algorithm>
 using namespace std;
 
+int n,m,tr[1000001];
+
 int main() {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
 
-  long long n,m;
-  cin >> n >> m;
-  long long tree[n];
-  for (int i=0; i<n; i++) {
-    cin >> tree[i];
-  }
+    cin >> n >> m;
+    for (int i=0; i<n; i++) cin >>tr[i];
+    sort(tr,tr+n);
 
-  int l=0, r=*max_element(tree,tree+n),result=0;
-  while (l<=r) {
-    long long sum=0,mid=(l+r)/2;
-    for (int i=0; i<n; i++) {
-      if (tree[i]-mid>0) sum+=tree[i]-mid;
+    long long int l=0,r=tr[n-1],ans=0;
+    while (l<=r) {
+        long long int mid = (l+r)/2,sum=0;
+        for (int i=0; i<n; i++) {
+            sum += (tr[i]-mid>0 ? tr[i]-mid : 0);
+        }
+        if (sum>=m) {
+            l = mid+1;
+            ans = max(ans,mid);
+        }
+        else {
+            r = mid-1;
+        }
     }
-    if (sum >= m) {
-      if (result<mid) result = mid;
-      l=mid+1;
-    }
-    else r=mid-1;
-  }
-  cout << result;
+    cout << ans;
 }
